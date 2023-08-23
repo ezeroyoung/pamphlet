@@ -1,0 +1,1 @@
+const kResourcesMarkdownsPath = 'resources/markdowns';
