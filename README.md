@@ -1,16 +1,14 @@
 # pamphlet
 
-A new Flutter project.
+A  pamphlet for leaning record.
 
-## Getting Started
+## Feature
 
-This project is a starting point for a Flutter application.
+- macOS style
 
-A few resources to get you started if this is your first Flutter project:
+- markdown support
+- multiple directory
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Problem
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Currently only works on macOS, there are some issues with other platforms.
