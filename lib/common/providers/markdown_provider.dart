@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pamphlet/common/states/markdown_state.dart';
 
+import '../../utils/utils.dart';
 import '../consts.dart';
 
 class MarkdownProvider extends ChangeNotifier {
@@ -69,17 +71,52 @@ class MarkdownProvider extends ChangeNotifier {
     final cachedMarkdownContent = state.cachedMarkdownContents[fileName];
     if (cachedMarkdownContent != null) {
       state.markdownContent = cachedMarkdownContent;
+      _configHeadingsKey();
       notifyListeners();
       return;
     }
     String markdownFilePath =
         '$kResourcesMarkdownsPath/$categoryName/$fileName.md';
     if (context.mounted) {
-      final markdownContent =
+      var markdownContent =
           await DefaultAssetBundle.of(context).loadString(markdownFilePath);
+      markdownContent = Utils.addHeadingNumbers(markdownContent);
       state.cachedMarkdownContents[fileName] = markdownContent;
       state.markdownContent = markdownContent;
+      _configHeadingsKey();
       notifyListeners();
+    }
+  }
+
+  void _configHeadingsKey() {
+    final extractHeadings = Utils.extractHeadings(state.markdownContent);
+    for (var heading in extractHeadings) {
+      final key = heading.replaceAll('#', '').trim();
+      state.markdownHeadingsKey[key] = GlobalKey(debugLabel: key);
+    }
+  }
+
+  void scrollToKey(String keyName) {
+    if (keyName == state.currentKeyName) {
+      return;
+    }
+    state.currentKeyName = keyName;
+    GlobalKey? key = state.markdownHeadingsKey[keyName];
+    if (key != null) {
+      final keyContext = key.currentContext;
+      if (keyContext != null) {
+        final box = keyContext.findRenderObject() as RenderBox;
+        final dy = box.localToGlobal(Offset.zero).dy;
+        if (kDebugMode) {
+          print(state.scrollController.offset);
+          print(dy);
+        }
+        state.scrollController.animateTo(
+          dy,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
     }
   }
 }

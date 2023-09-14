@@ -36,12 +36,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_markdown: ^0.6.15
-  macos_ui:
-    git:
-      url: https://github.com/macosui/macos_ui.git
-      ref: dev
+  macos_ui: ^2.0.0
   provider: ^6.0.5
-  markdown: ^7.1.0
+  # markdown: ^7.1.0
   path_provider: ^2.0.15
   dio: ^5.2.1+1
 

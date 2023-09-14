@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:pamphlet/common/providers/markdown_provider.dart';
+import 'package:pamphlet/common/views/markdown_headings_view.dart';
 import 'package:pamphlet/common/views/markdown_list_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../theme/theme.dart';
+import 'markdown_header_builder.dart';
 
 class MarkdownScaffold extends StatefulWidget {
   const MarkdownScaffold({super.key, required this.name, required this.index});
@@ -19,8 +21,6 @@ class MarkdownScaffold extends StatefulWidget {
 }
 
 class _MarkdownScaffoldState extends State<MarkdownScaffold> {
-  late MarkdownProvider _provider;
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -87,6 +87,7 @@ class _MarkdownScaffoldState extends State<MarkdownScaffold> {
         ),
         ContentArea(
           builder: (context, scrollController) {
+            state.scrollController = scrollController;
             provider.getMarkdownFileContent(widget.name, context);
 
             final appTheme = context.watch<AppTheme>();
@@ -97,10 +98,26 @@ class _MarkdownScaffoldState extends State<MarkdownScaffold> {
             return Consumer<MarkdownProvider>(
                 builder: (context, value, child) => Theme(
                     data: useDarkTheme ? ThemeData.dark() : ThemeData.light(),
-                    child: Markdown(data: state.markdownContent)));
-            return Theme(
-                data: useDarkTheme ? ThemeData.dark() : ThemeData.light(),
-                child: Markdown(data: state.markdownContent));
+                    child: SingleChildScrollView(
+                        padding: const EdgeInsets.all(15.0),
+                        controller: scrollController, // Optional
+                        child: MarkdownBody(
+                          data: state.markdownContent,
+                          builders: {
+                            'h1': MarkdownHeaderBuilder(
+                                state.markdownHeadingsKey),
+                            'h2': MarkdownHeaderBuilder(
+                                state.markdownHeadingsKey),
+                            'h3': MarkdownHeaderBuilder(
+                                state.markdownHeadingsKey),
+                            'h4': MarkdownHeaderBuilder(
+                                state.markdownHeadingsKey),
+                            'h5': MarkdownHeaderBuilder(
+                                state.markdownHeadingsKey),
+                            'h6': MarkdownHeaderBuilder(
+                                state.markdownHeadingsKey),
+                          },
+                        ))));
           },
         ),
         ResizablePane(
@@ -108,12 +125,12 @@ class _MarkdownScaffoldState extends State<MarkdownScaffold> {
           startSize: 200,
           windowBreakpoint: 800,
           resizableSide: ResizableSide.left,
-          builder: (_, __) {
-            return const Center(
-              child: Text('Look forward to it!'),
-            );
-          },
-        ),
+          builder: (_, scrollController) => Consumer<MarkdownProvider>(
+              builder: (_, __, ___) => MarkdownHeadingsView(
+                    markdownContent: state.markdownContent,
+                    scrollController: scrollController,
+                  )),
+        )
       ],
     );
   }

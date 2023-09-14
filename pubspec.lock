@@ -142,12 +142,11 @@ packages:
   macos_ui:
     dependency: "direct main"
     description:
-      path: "."
-      ref: dev
-      resolved-ref: f1053fc31958dbaa362a0a4c8288e8cf0919ab8c
-      url: "https://github.com/macosui/macos_ui.git"
-    source: git
-    version: "2.0.0-beta.1"
+      name: macos_ui
+      sha256: b739149b812c47e5ff10a00c9fdf7315f22ac5cd1fdbd447a6b7ffee31472717
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
   macos_window_utils:
     dependency: transitive
     description:
@@ -157,7 +156,7 @@ packages:
     source: hosted
     version: "1.1.3"
   markdown:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: markdown
       sha256: "8e332924094383133cee218b676871f42db2514f1f6ac617b6cf6152a7faab8e"
