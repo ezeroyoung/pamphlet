@@ -11,7 +11,7 @@ Future<void> _configureMacosWindowUtils() async {
 }
 
 Future<void> main() async {
-  await _configureMacosWindowUtils();
+  // await _configureMacosWindowUtils();
   runApp(const App());
 }
 
@@ -26,6 +26,7 @@ class App extends StatelessWidget {
         final appTheme = context.watch<AppTheme>();
         return MacosApp(
           title: 'Pamphlet',
+          // showPerformanceOverlay: true,
           theme: MacosThemeData.light(),
           darkTheme: MacosThemeData.dark(),
           themeMode: appTheme.mode,
